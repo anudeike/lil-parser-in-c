@@ -3,6 +3,9 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string>
+#include <stdlib.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include "string.h"
 
 /* Global declarations */
@@ -11,7 +14,7 @@ int charClass;
 char lexeme [100];
 char nextChar;
 int lexLen;
-int token;
+int size = 0;
 int nextToken = -2;
 FILE *in_fp, *fopen();
 
@@ -27,6 +30,8 @@ int lex();
 #define UNKNOWN 99
 
 /* Token codes */
+#define NEWLINE 2
+
 #define INT_LIT 10
 #define IDENT 11
 #define ASSIGN_OP 20
@@ -36,9 +41,13 @@ int lex();
 #define DIV_OP 24
 #define LEFT_PAREN 25
 #define RIGHT_PAREN 26
-#define FUNC_KEYWORD 27
-#define OPEN_BRACKET 28
-#define CLOSE_BRACKET 29
+#define OPEN_BRACKET 27
+#define CLOSE_BRACKET 28
+
+// keywords
+#define FUNC_KEYWORD 50
+#define TARGET_KEYWORD 51
+
 
 
 // function prototypes for just expr()
@@ -49,6 +58,11 @@ void funcdef();
 // define the grammar
 /*
  * grammar for a function
+ * <program> -> <target> <funcdef>
+ * <target> -> "target" <lang>
+ * <lang> -> "c" | "python" | "cpp"
+ *
+ * -- Already implemented
  * <funcdef> -> func <func_name> "(" ")" "{" <function_body> "}
  * <stmt> -> id = <expr> ;
    <expr> → <term> {(+ | -) <term>}
@@ -63,7 +77,25 @@ void funcdef();
    <id> ::= [a-z]+
    <int_literal> ::= [0-9]+
 */
-/******************************************************/
+
+// Utility Functions
+void consumeNewline(){
+    while(nextToken == NEWLINE){
+        lex();
+    }
+}
+
+// get the size of the file
+// get the size
+off_t fsize(const char *filename) {
+    struct stat st;
+
+    if (stat(filename, &st) == 0)
+        return st.st_size;
+
+    return -1;
+}
+
 /* main driver */
 int main() {
     // save the file path
@@ -74,6 +106,9 @@ int main() {
         // open the file
         printf("ERROR - cannot open front.in \n");
     else {
+        // get the size of the file
+        size = fsize(path);
+
         // get characters and lex()?
         getChar();
         do {
@@ -90,6 +125,13 @@ void error(const char * msg){
 
 void funcdef() {
     printf("Enter <funcdef> \n");
+
+    // while next token is a newLine
+    while(nextToken == NEWLINE){
+
+        // get the next token
+        lex();
+    }
 
     //if "func"
     if (nextToken == FUNC_KEYWORD){
@@ -111,8 +153,37 @@ void funcdef() {
                     if(nextToken == OPEN_BRACKET){
                         lex();
 
-                        // parse a statement
-                        stmt();
+                        consumeNewline();
+
+                        while(nextToken == IDENT){
+                            stmt();
+                            consumeNewline();
+                        }
+//                        if(nextToken == IDENT){
+//                            stmt();
+//                        }
+//
+//                        // while next token is a newLine
+//                        consumeNewline();
+//
+//                        // parse a statement
+//                        stmt();
+//
+//
+////                        // while the next token is an identifier
+////                        while(nextToken == IDENT){
+////                            printf("called\n\n");
+////                            stmt();
+////                        }
+//
+//                        // consumeNewLine
+//                        consumeNewline();
+//
+//                        if(nextToken == IDENT){
+//                            stmt();
+//                        }
+//
+//                        consumeNewline();
 
                         // find a close bracket
                         if(nextToken == CLOSE_BRACKET){
@@ -130,16 +201,18 @@ void funcdef() {
             error("Function must have a name.");
         }
     }else {
-        error("We are currently throwing an error.");
+        error("Need to define a function");
     }
 
-    printf("Exit <funcdef>");
+    printf("Exit <funcdef>\n");
 }
+
+
 // the stmt function
 void stmt() {
     printf("Enter <stmt>\n");
 
-    if (nextToken == IDENT || nextToken == FUNC_KEYWORD){
+    while (nextToken == IDENT){
 
         lex(); // get next token
 
@@ -147,7 +220,7 @@ void stmt() {
             lex();
             expr();
         }
-    } else if (nextToken == FUNC_KEYWORD)
+    }
 
     printf("Exit <stmt>\n");
 
@@ -261,6 +334,15 @@ int lookup(char ch) {
             nextToken = CLOSE_BRACKET;
             break;
 
+        case '\n':
+
+            // signify we hit a new line.
+            nextToken = NEWLINE;
+            lexeme[0] = 'N';
+            lexeme[1] = 'L';
+            lexeme[2] = 0;
+            break;
+
         default:
             addChar();
             nextToken = EOF;
@@ -297,7 +379,8 @@ void getChar() {
 /* getNonBlank - a function to call getChar until it
  returns a non-whitespace character */
 void getNonBlank() {
-    while (isspace(nextChar))
+    // while is blank and not a newline (we can handle that)
+    while (isspace(nextChar) && nextChar != '\n')
         getChar();
 }
 /*****************************************************/
@@ -323,6 +406,13 @@ int lex() {
                 nextToken = FUNC_KEYWORD;
                 break;
             }
+
+            // if the identifier matches the word target
+            if((strcmp(lexeme, "target")) == 0){
+                nextToken = TARGET_KEYWORD;
+                break;
+            }
+
 
             nextToken = IDENT;
             break;

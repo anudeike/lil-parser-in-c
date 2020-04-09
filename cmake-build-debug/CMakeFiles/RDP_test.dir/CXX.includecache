@@ -13,6 +13,12 @@ ctype.h
 -
 string
 -
+stdlib.h
+-
+sys/stat.h
+-
+sys/types.h
+-
 string.h
 C:/Users/Ikechukwu Anude/CLionProjects/RDP_test/string.h
 
