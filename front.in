@@ -1,0 +1,3 @@
+func example() {
+    a = 4
+}

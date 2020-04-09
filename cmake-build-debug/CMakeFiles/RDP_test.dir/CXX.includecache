@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/Ikechukwu Anude/CLionProjects/RDP_test/main.cpp
+stdio.h
+-
+ctype.h
+-
+string
+-
+string.h
+C:/Users/Ikechukwu Anude/CLionProjects/RDP_test/string.h
+
