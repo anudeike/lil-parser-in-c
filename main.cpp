@@ -20,6 +20,10 @@ int size = 0;
 int nextToken = -2;
 FILE *in_fp, *fopen();
 
+// scope variables
+std::string currentScope = "global";
+
+// info struct
 struct Info{
     // initializing for debugging purposes
     int code = -50; // this handles datatype and keywords
@@ -35,6 +39,8 @@ struct Info{
 
 // create a symbol table Hash Map
 std::map<std::string, Info> SymbolTableHashMap;
+
+
 
 /* Function declarations */
 void addChar();
@@ -120,8 +126,10 @@ void displaySymbolTable(std::map<std::string, Info> table){
     std::map<std::string, Info>::iterator itr;
     printf("\nSymbol Table Contents\n");
     for(itr = table.begin(); itr != table.end(); itr++){
-        printf()
+        std::cout << itr->first << "\t";
+        itr->second.showContents();
     }
+    std::cout << std::endl;
 }
 
 /* main driver */
@@ -167,6 +175,8 @@ void funcdef() {
 
         //if the next token is an identifier, it must be the function name
         if(nextToken == IDENT){
+            // set the function scope to the identifier
+            currentScope = lexeme;
             lex();
 
             // if the next token is a left paren
@@ -183,7 +193,10 @@ void funcdef() {
 
                         consumeNewline();
 
+
                         while(nextToken == IDENT){
+                            // must be a variable name
+
                             stmt();
                             consumeNewline();
                         }
