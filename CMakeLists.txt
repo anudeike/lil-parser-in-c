@@ -3,4 +3,4 @@ project(RDP_test)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(RDP_test main.cpp)
+add_executable(RDP_test main.cpp SymbolTable.cpp SymbolTable.h)

@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/RDP_test.dir/main.cpp.obj"
+  "CMakeFiles/RDP_test.dir/SymbolTable.cpp.obj"
   "RDP_test.pdb"
   "RDP_test.exe"
   "RDP_test.exe.manifest"

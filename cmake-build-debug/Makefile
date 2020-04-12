@@ -122,6 +122,33 @@ RDP_test/fast:
 	$(MAKE) -f CMakeFiles\RDP_test.dir\build.make CMakeFiles/RDP_test.dir/build
 .PHONY : RDP_test/fast
 
+SymbolTable.obj: SymbolTable.cpp.obj
+
+.PHONY : SymbolTable.obj
+
+# target to build an object file
+SymbolTable.cpp.obj:
+	$(MAKE) -f CMakeFiles\RDP_test.dir\build.make CMakeFiles/RDP_test.dir/SymbolTable.cpp.obj
+.PHONY : SymbolTable.cpp.obj
+
+SymbolTable.i: SymbolTable.cpp.i
+
+.PHONY : SymbolTable.i
+
+# target to preprocess a source file
+SymbolTable.cpp.i:
+	$(MAKE) -f CMakeFiles\RDP_test.dir\build.make CMakeFiles/RDP_test.dir/SymbolTable.cpp.i
+.PHONY : SymbolTable.cpp.i
+
+SymbolTable.s: SymbolTable.cpp.s
+
+.PHONY : SymbolTable.s
+
+# target to generate assembly for a file
+SymbolTable.cpp.s:
+	$(MAKE) -f CMakeFiles\RDP_test.dir\build.make CMakeFiles/RDP_test.dir/SymbolTable.cpp.s
+.PHONY : SymbolTable.cpp.s
+
 main.obj: main.cpp.obj
 
 .PHONY : main.obj
@@ -158,6 +185,9 @@ help:
 	@echo ... RDP_test
 	@echo ... edit_cache
 	@echo ... rebuild_cache
+	@echo ... SymbolTable.obj
+	@echo ... SymbolTable.i
+	@echo ... SymbolTable.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s

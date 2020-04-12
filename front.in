@@ -1,15 +1,13 @@
 func example() {
-
     a = 4
     n = 7
     h = 8
     u = 29
     j = 0
-
-
-
 }
 
 func example() {
     a = 4
+    b = h + 7
+    h = 6 + 5
 }

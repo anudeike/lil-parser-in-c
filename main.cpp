@@ -7,6 +7,8 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include "string.h"
+#include <map>
+#include <iostream>
 
 /* Global declarations */
 /* Variables */
@@ -17,6 +19,22 @@ int lexLen;
 int size = 0;
 int nextToken = -2;
 FILE *in_fp, *fopen();
+
+struct Info{
+    // initializing for debugging purposes
+    int code = -50; // this handles datatype and keywords
+    std::string scope = "global"; // name of the local scope it is in
+    int value = 0; // we only process ints rn, will also be able to handle functions with a special number.
+
+    void showContents(){
+        std::cout << "Data Type: " << code << "\n";
+        std::cout << "Scope: " << scope << "\n";
+        std::cout << "Value " << value << "\n";
+    }
+};
+
+// create a symbol table Hash Map
+std::map<std::string, Info> SymbolTableHashMap;
 
 /* Function declarations */
 void addChar();
@@ -48,6 +66,7 @@ int lex();
 #define FUNC_KEYWORD 50
 #define TARGET_KEYWORD 51
 
+// type structs
 
 
 // function prototypes for just expr()
@@ -58,7 +77,7 @@ void funcdef();
 // define the grammar
 /*
  * grammar for a function
- * <program> -> <target> <funcdef>
+ * <program> -> # <target> <funcdef>
  * <target> -> "target" <lang>
  * <lang> -> "c" | "python" | "cpp"
  *
@@ -94,6 +113,15 @@ off_t fsize(const char *filename) {
         return st.st_size;
 
     return -1;
+}
+
+// for viewing the symbol table
+void displaySymbolTable(std::map<std::string, Info> table){
+    std::map<std::string, Info>::iterator itr;
+    printf("\nSymbol Table Contents\n");
+    for(itr = table.begin(); itr != table.end(); itr++){
+        printf()
+    }
 }
 
 /* main driver */

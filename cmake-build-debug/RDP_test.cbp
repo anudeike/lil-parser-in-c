@@ -82,6 +82,12 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="C:/Users/Ikechukwu Anude/CLionProjects/RDP_test/SymbolTable.cpp">
+			<Option target="RDP_test"/>
+		</Unit>
+		<Unit filename="C:/Users/Ikechukwu Anude/CLionProjects/RDP_test/SymbolTable.h">
+			<Option target="RDP_test"/>
+		</Unit>
 		<Unit filename="C:/Users/Ikechukwu Anude/CLionProjects/RDP_test/main.cpp">
 			<Option target="RDP_test"/>
 		</Unit>
